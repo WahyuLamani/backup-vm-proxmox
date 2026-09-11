@@ -11,6 +11,7 @@ VMID="107"
 NAS_MOUNT="/mnt/nas-backup"
 NAS_BACKUP_DIR="${NAS_MOUNT}/Regional"
 LOG_FILE="/var/log/backup-to-nas.log"
+RETENTION=2
 
 # ============================================================
 # Fungsi logging
@@ -162,9 +163,9 @@ DIR_COUNT="${#BACKUP_DIRS[@]}"
 
 log "Jumlah folder backup NAS: $DIR_COUNT"
 
-if [ "$DIR_COUNT" -gt 2 ]; then
+if [ "$DIR_COUNT" -gt "$RETENTION" ]; then
 
-    for ((i=2; i<DIR_COUNT; i++)); do
+    for ((i=RETENTION; i<DIR_COUNT; i++)); do
 
         OLD_DIR="${BACKUP_DIRS[$i]}"
         OLD_PATH="${NAS_BACKUP_DIR}/${OLD_DIR}"
@@ -177,7 +178,7 @@ if [ "$DIR_COUNT" -gt 2 ]; then
 
 else
 
-    log "Retention tidak perlu dijalankan. Backup NAS <= 2."
+    log "Retention tidak perlu dijalankan. Backup NAS <= $RETENTION."
 
 fi
 
