@@ -1,6 +1,6 @@
-# SOP Standar Implementasi Backup Proxmox VM ke NAS OpenMediaVault
+# Standar Implementasi Backup Proxmox VM ke NAS OpenMediaVault
 
-**Dokumen:** SOP Backup Proxmox → NAS OMV  
+**Dokumen:** Backup Proxmox → NAS OMV  
 **Versi:** 1.0  
 **Status:** Template Implementasi  
 **Tujuan:** Menjadi standar baku pemasangan backup VM Proxmox ke NAS OpenMediaVault pada server lain.
@@ -9,7 +9,7 @@
 
 ## 1. Tujuan
 
-SOP ini digunakan untuk membangun mekanisme backup dengan alur:
+ini digunakan untuk membangun mekanisme backup dengan alur:
 
 **PROXMOX → BACKUP LOKAL → BACKUP SELESAI → BACKUP KE NAS OMV → RETENTION**
 
@@ -72,17 +72,17 @@ Prinsip utama:
 
 # 3. Komponen yang Digunakan
 
-| Komponen | Fungsi |
-|---|---|
-| Proxmox VE | Menjalankan VM dan membuat backup |
-| `vzdump` | Membuat backup VM |
-| Vzdump Hook | Menjalankan proses setelah backup selesai |
-| `backup-to-nas.sh` | Menyalin backup ke NAS dan menjalankan retention |
-| OpenMediaVault | Menyediakan storage NAS |
-| NFS | Protokol akses Proxmox ke NAS |
-| `/etc/fstab` | Membuat mount NFS permanen |
-| `/etc/vzdump.conf` | Mengaktifkan hook script |
-| `/var/log/backup-to-nas.log` | Log proses transfer dan retention |
+| Komponen                     | Fungsi                                           |
+| ---------------------------- | ------------------------------------------------ |
+| Proxmox VE                   | Menjalankan VM dan membuat backup                |
+| `vzdump`                     | Membuat backup VM                                |
+| Vzdump Hook                  | Menjalankan proses setelah backup selesai        |
+| `backup-to-nas.sh`           | Menyalin backup ke NAS dan menjalankan retention |
+| OpenMediaVault               | Menyediakan storage NAS                          |
+| NFS                          | Protokol akses Proxmox ke NAS                    |
+| `/etc/fstab`                 | Membuat mount NFS permanen                       |
+| `/etc/vzdump.conf`           | Mengaktifkan hook script                         |
+| `/var/log/backup-to-nas.log` | Log proses transfer dan retention                |
 
 ---
 
@@ -90,20 +90,20 @@ Prinsip utama:
 
 Sebelum implementasi, tentukan parameter berikut.
 
-| Parameter | Contoh | Wajib Disesuaikan |
-|---|---|---|
-| Hostname Proxmox | `mdorgl` | Ya |
-| VMID | `107` | Ya |
-| IP NAS OMV | `192.168.71.211` | Ya |
-| NFS Export | `/export/Backup_VM` | Ya |
-| Mount Point | `/mnt/nas-backup` | Bisa tetap |
-| Folder NAS | `/Regional/` | Ya |
-| Storage backup lokal | `local` | Sesuaikan |
-| Folder backup lokal | `/var/lib/vz/dump/` | Sesuaikan |
-| Jadwal backup | Minggu 07:00 | Sesuaikan kebutuhan |
-| Retention NAS | 2 backup | Sesuaikan kebijakan |
+| Parameter            | Contoh              | Wajib Disesuaikan   |
+| -------------------- | ------------------- | ------------------- |
+| Hostname Proxmox     | `mdorgl`            | Ya                  |
+| VMID                 | `107`               | Ya                  |
+| IP NAS OMV           | `192.168.71.211`    | Ya                  |
+| NFS Export           | `/export/Backup_VM` | Ya                  |
+| Mount Point          | `/mnt/nas-backup`   | Bisa tetap          |
+| Folder NAS           | `/Regional/`        | Ya                  |
+| Storage backup lokal | `local`             | Sesuaikan           |
+| Folder backup lokal  | `/var/lib/vz/dump/` | Sesuaikan           |
+| Jadwal backup        | Minggu 07:00        | Sesuaikan kebutuhan |
+| Retention NAS        | 2 backup            | Sesuaikan kebijakan |
 
-**Catatan:** File `.sh` yang digunakan untuk implementasi sudah disiapkan terpisah. SOP ini hanya menjelaskan tata cara implementasinya.
+**Catatan:** File `.sh` yang digunakan untuk implementasi sudah disiapkan terpisah. Prosedure ini hanya menjelaskan tata cara implementasinya.
 
 ---
 
@@ -956,20 +956,20 @@ tail -100 /var/log/backup-to-nas.log
 
 # 37. Checklist Validasi Setelah Backup Pertama
 
-| Pemeriksaan | Status |
-|---|---|
-| VM tetap berjalan | ☐ |
-| Backup lokal terbentuk | ☐ |
-| File `.vma.zst` tersedia | ☐ |
-| Hook dipanggil | ☐ |
-| TARGET terdeteksi | ☐ |
-| NFS tetap mounted | ☐ |
-| Transfer ke NAS berhasil | ☐ |
-| Ukuran source = target | ☐ |
-| Folder tanggal NAS terbentuk | ☐ |
-| Log menunjukkan sukses | ☐ |
-| Retention bekerja | ☐ |
-| Backup lokal tidak terhapus | ☐ |
+| Pemeriksaan                  | Status |
+| ---------------------------- | ------ |
+| VM tetap berjalan            | ☐      |
+| Backup lokal terbentuk       | ☐      |
+| File `.vma.zst` tersedia     | ☐      |
+| Hook dipanggil               | ☐      |
+| TARGET terdeteksi            | ☐      |
+| NFS tetap mounted            | ☐      |
+| Transfer ke NAS berhasil     | ☐      |
+| Ukuran source = target       | ☐      |
+| Folder tanggal NAS terbentuk | ☐      |
+| Log menunjukkan sukses       | ☐      |
+| Retention bekerja            | ☐      |
+| Backup lokal tidak terhapus  | ☐      |
 
 ---
 
@@ -1586,4 +1586,4 @@ Standar backup yang digunakan adalah:
 
 Dengan desain ini, backup lokal Proxmox tetap tersedia sebagai salinan utama/cepat, sementara NAS OMV menyimpan salinan terpisah dengan retention yang terkontrol.
 
-**Dokumen ini merupakan SOP implementasi. File `.sh` untuk server tidak termasuk dalam dokumen ini dan digunakan sebagai file deployment terpisah.**
+**Dokumen ini merupakan Standar implementasi. File `.sh` untuk server tidak termasuk dalam dokumen ini dan digunakan sebagai file deployment terpisah.**
