@@ -47,6 +47,32 @@ if [ "$PHASE" = "backup-end" ]; then
 
     log "Transfer backup VM ${VMID} ke NAS berhasil."
 
+    # ========================================================
+    # Trigger DR Restore di Proxmox B
+    # Hanya dijalankan setelah backup ke NAS berhasil
+    # ========================================================
+
+    DR_HOST="192.168.71.205"
+    DR_VM_NAME="ONEMDORAYA"
+    DR_RESTORE_SCRIPT="/usr/local/sbin/dr-restore-reusable.sh"
+
+    log "Memulai trigger DR restore di Proxmox B ${DR_HOST}..."
+    log "DR Engine: ${DR_RESTORE_SCRIPT} ${DR_VM_NAME}"
+
+    ssh -o BatchMode=yes \
+        -o ConnectTimeout=30 \
+        "root@${DR_HOST}" \
+        "nohup ${DR_RESTORE_SCRIPT} ${DR_VM_NAME} >/dev/null 2>&1 </dev/null &"
+
+    DR_RESULT=$?
+
+    if [ "$DR_RESULT" -ne 0 ]; then
+        log "ERROR: Gagal melakukan trigger DR restore di Proxmox B. Exit code: ${DR_RESULT}"
+        exit "$DR_RESULT"
+    fi
+
+    log "DR restore berhasil ditrigger di Proxmox B."
+    log "Proxmox A tidak menunggu proses DR restore selesai."
 fi
 
 exit 0
