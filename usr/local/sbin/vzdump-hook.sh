@@ -52,27 +52,29 @@ if [ "$PHASE" = "backup-end" ]; then
     # Hanya dijalankan setelah backup ke NAS berhasil
     # ========================================================
 
-    DR_HOST="192.168.71.205"
-    DR_VM_NAME="ONEMDORAYA"
-    DR_RESTORE_SCRIPT="/usr/local/sbin/dr-restore-reusable.sh"
+    #uncomment perintah di bawah apabila sudah config proxmox DR dan ssh key antara production dan DR
 
-    log "Memulai trigger DR restore di Proxmox B ${DR_HOST}..."
-    log "DR Engine: ${DR_RESTORE_SCRIPT} ${DR_VM_NAME}"
+    #DR_HOST="192.168.71.205"
+    #DR_VM_NAME="ONEMDORAYA" #nama di sesuaikan dengan nama file conf di proxmox DR
+    #DR_RESTORE_SCRIPT="/usr/local/sbin/dr-restore-reusable.sh"
 
-    ssh -o BatchMode=yes \
-        -o ConnectTimeout=30 \
-        "root@${DR_HOST}" \
-        "nohup ${DR_RESTORE_SCRIPT} ${DR_VM_NAME} >/dev/null 2>&1 </dev/null &"
+    #log "Memulai trigger DR restore di Proxmox B ${DR_HOST}..."
+    #log "DR Engine: ${DR_RESTORE_SCRIPT} ${DR_VM_NAME}"
 
-    DR_RESULT=$?
+    #ssh -o BatchMode=yes \
+    #    -o ConnectTimeout=30 \
+    #    "root@${DR_HOST}" \
+    #    "nohup ${DR_RESTORE_SCRIPT} ${DR_VM_NAME} >/dev/null 2>&1 </dev/null &"
 
-    if [ "$DR_RESULT" -ne 0 ]; then
-        log "ERROR: Gagal melakukan trigger DR restore di Proxmox B. Exit code: ${DR_RESULT}"
-        exit "$DR_RESULT"
-    fi
+    #DR_RESULT=$?
 
-    log "DR restore berhasil ditrigger di Proxmox B."
-    log "Proxmox A tidak menunggu proses DR restore selesai."
+    #if [ "$DR_RESULT" -ne 0 ]; then
+    #    log "ERROR: Gagal melakukan trigger DR restore di Proxmox B. Exit code: ${DR_RESULT}"
+    #    exit "$DR_RESULT"
+    #fi
+
+    #log "DR restore berhasil ditrigger di Proxmox B."
+    #log "Proxmox A tidak menunggu proses DR restore selesai."
 fi
 
 exit 0
